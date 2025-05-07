@@ -19,18 +19,12 @@ public class WebSecurityConfig {
 
     private final UserDetailService userService;
 
-    //스프링 시큐리티 기능 비활성화
-    @Bean
-    public WebSecurityCustomizer configure() {
-        return (web) -> web.ignoring()
-                .requestMatchers(toH2Console())
-                .requestMatchers("/static/**");
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(toH2Console()).permitAll()
+                        .requestMatchers("/static/**").permitAll()
                         .requestMatchers("/login", "/signup", "/user").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
@@ -40,6 +34,7 @@ public class WebSecurityConfig {
                         .logoutSuccessUrl("/login")
                         .invalidateHttpSession(true))
                 .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()))
                 .build();
     }
 
