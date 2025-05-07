@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-@Table(name = "user")
+@Table(name = "users")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @Entity
